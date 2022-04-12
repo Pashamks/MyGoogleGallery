@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EfCore.Repository.DbModels
+namespace MyGooglegallery.EfCore.Repository.DbModels
 {
     public class UserPhoto
     {

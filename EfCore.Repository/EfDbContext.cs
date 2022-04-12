@@ -1,14 +1,14 @@
-﻿using EfCore.Repository.DbModels;
+﻿using MyGooglegallery.EfCore.Repository.DbModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace EfCore.Repository
+namespace MyGooglegallery.EfCore.Repository
 {
     public class EfDbContext : DbContext
     {
         protected string _connectionString = "Data Source=DESKTOP-SM098C1;Initial Catalog=MyGoogleGalleryDb;Integrated Security=True";
-        DbSet<UserPhoto> UserPhotos { get; set; }
+        public DbSet<UserPhoto> UserPhotos { get; set; }
         public EfDbContext()
         {
 
