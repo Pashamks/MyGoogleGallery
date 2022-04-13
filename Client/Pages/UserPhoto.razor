@@ -1,22 +1,37 @@
 ﻿@page "/upload_photo"
+@using MyGoogleGallery.Shared.Models
+@inject HttpClient Http
 
-<h1>Add your photo</h1>
+<h1 style="text-align: center; margin-bottom: 3%;">Add your photo!</h1>
 
 <div class="row col-12">
-    <div class="col-4">
-        <img src="@ProfilePicDataUrl" style="min-width: 250px; min-height: 250px; max-width: 500px; max-height: 500px"/>
-        <br />
-        <br />
-        <InputFile OnChange="@OnInputFileChange"></InputFile>
+    <div class="col col-6">
+        <div >
+            <h3>Upload your image from your device:</h3>
+
+            <InputFile OnChange="@OnInputFileChange"></InputFile>
+        </div>
+        <div>
+            <h3>Find image in Internet:</h3>
+            <input type="text" />
+            <button class="btn btn-primary">Find photo</button>
+        </div>
+        
+    </div>
+
+    <div class="row col-6">
+        <img src="@ProfilePicDataUrl"class="rounded" style="min-width: 250px; min-height: 250px; max-width: 500px; max-height: 500px" />
     </div>
 </div>
-
-<!--<button class="btn btn-primary" >Upload from your device</button>-->
+<div class="d-flex justify-content-around mt-3">
+    <button class="btn btn-success" @onclick="SavePhoto">Save photo</button>
+    <button class="btn btn-danger" >Clear current photo</button>
+</div>
 
 @code {
 
     public string ProfilePicDataUrl { get; set; }
-    private async Task OnInputFileChange(InputFileChangeEventArgs inputFileChangeEvent)
+    protected async Task OnInputFileChange(InputFileChangeEventArgs inputFileChangeEvent)
     {
         var file = inputFileChangeEvent.File;
 
@@ -24,6 +39,16 @@
 
         await file.OpenReadStream().ReadAsync(buffer);
 
-        ProfilePicDataUrl = $"data:image/jpg;base64,{Convert.ToBase64String(buffer)}";
+        ProfilePicDataUrl = $"data:image/jpg/png;base64,{Convert.ToBase64String(buffer)}";
+
     }
+    protected async Task SavePhoto()
+    {
+        UserPhotoModel userPhoto = new UserPhotoModel { PhotoType = "Cat", PhotoUrl = this.ProfilePicDataUrl, SearchingCounter = 0};
+
+        var res = await Http.PostAsJsonAsync<UserPhotoModel>("https://localhost:5001/api/UserPhoto/add_photo", userPhoto);
+
+        Console.WriteLine(res.Content.ReadAsStringAsync().Result);
+    }
+
 }
