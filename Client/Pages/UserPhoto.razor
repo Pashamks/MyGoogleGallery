@@ -1,36 +1,154 @@
 ﻿@page "/upload_photo"
 @using MyGoogleGallery.Shared.Models
 @inject HttpClient Http
+@inject IJSRuntime JS
+<style>
+    body {
+        background-image: url('https://images.pexels.com/photos/1040499/pexels-photo-1040499.jpeg');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
 
-<h1 style="text-align: center; margin-bottom: 3%;">Add your photo!</h1>
+    .borders {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 2em;
+        border: 5px outset orange;
+        border-radius: 25px;
+    }
 
-<div class="row col-12">
-    <div class="col col-6">
-        <div >
-            <h3>Upload your image from your device:</h3>
+    .text {
+        color: white;
+    }
 
-            <InputFile OnChange="@OnInputFileChange"></InputFile>
-        </div>
-        <div>
-            <h3>Find image in Internet:</h3>
-            <input type="text" />
-            <button class="btn btn-primary">Find photo</button>
-        </div>
+    .div-border {
+        background: #6C1A46;
+        border-radius: 25px;
+        max-width: 250px;
+        margin-left: 2%;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        min-height: 120px;
+    }
+
+    .div-text {
+        align-self: center;
+        max-width: 200px;
+        color: white;
+    }
+
+    .first-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2%;
+    }
+
+    .second-row {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2%;
+    }
+
+    .second-div-border {
+        background: #6C1A46;
+        border-radius: 25px;
+        margin-left: 2%;
+        min-width: 410px;
+        min-height: 50px;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .second-row-elements {
+        align-self: center;
+        margin-left: 3%;
+    }
+
+    .name-input {
+        border-radius: 25px;
+    }
+
+    .div-buttons {
+        border-radius: 25px;
+        max-width: 250px;
+        margin-left: 2%;
+        align-self: center;
+        justify-content: center;
+        min-height: 30px;
+        min-width: 200px;
+        min-height: 60px;
+    }
+
+    .my-buttons {
         
-    </div>
+        min-width: 200px;
+        min-height: 60px;
+        border-radius: 25px;
+        font-size: 28px;
+        background: #6C1A46;
+        color: white;
+        border-color: #6C1A46;
+    }
+</style>
 
-    <div class="row col-6">
-        <img src="@ProfilePicDataUrl"class="rounded" style="min-width: 250px; min-height: 250px; max-width: 500px; max-height: 500px" />
+<div style="">
+    <h1 style="text-align: center; margin-bottom: 3%; color: white;">Add your photo!</h1>
+
+    <div class="row col-12">
+
+        <div class="col col-6 mb-2">
+            <div class="first-row">
+                <div class="div-border">
+                    <h3 class="div-text">Upload your image from your device:</h3>
+                </div>
+                <div class="div-border">
+                    <h3 class="div-text">Find image in Internet:</h3>
+                </div>
+            </div>
+            <div class="second-row">
+                <div class="second-div-border">
+                    <div class="second-row-elements">
+                        <h5 class="div-text">Enter image name:</h5>
+                    </div>
+                    <div class="second-row-elements">
+                        <input class="name-input" type="text" @bind="PictureName" />
+                    </div>
+                </div>
+            </div>
+            <div class="first-row">
+                <div class="div-buttons">
+                    <button class="my-buttons" @onclick="CallButtonClick">Upload photo</button>
+                    <InputFile id="myinput" hidden OnChange="@OnInputFileChange"></InputFile>
+                </div>
+                <div class="div-buttons">
+                    <button class="my-buttons" @onclick="FindPicture">Find photo</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row col-6 justify-content-center">
+            <img src="@ProfilePicDataUrl" class="borders" style="min-width: 250px; min-height: 250px; max-width: 500px; max-height: 500px" />
+        </div>
+    </div>
+    <div class="d-flex justify-content-around mt-3">
+        <button class="btn btn-success" @onclick="SavePhoto">Save photo</button>
+        <button class="btn btn-danger">Clear current photo</button>
     </div>
 </div>
-<div class="d-flex justify-content-around mt-3">
-    <button class="btn btn-success" @onclick="SavePhoto">Save photo</button>
-    <button class="btn btn-danger" >Clear current photo</button>
-</div>
+
 
 @code {
-
+    public string PictureName { get; set; }
     public string ProfilePicDataUrl { get; set; }
+    protected async Task CallButtonClick()
+    {
+        await JS.InvokeAsync<string>("ButtonClick", "");
+    }
     protected async Task OnInputFileChange(InputFileChangeEventArgs inputFileChangeEvent)
     {
         var file = inputFileChangeEvent.File;
@@ -42,9 +160,15 @@
         ProfilePicDataUrl = $"data:image/jpg/png;base64,{Convert.ToBase64String(buffer)}";
 
     }
+    protected async Task FindPicture()
+    {
+        var res = await Http.GetAsync($"https://localhost:5001/api/UserPhoto/find_photos?searchTerm={PictureName}");
+        ProfilePicDataUrl = res.Content.ReadAsStringAsync().Result;
+        Console.WriteLine(ProfilePicDataUrl);
+    }
     protected async Task SavePhoto()
     {
-        UserPhotoModel userPhoto = new UserPhotoModel { PhotoType = "Cat", PhotoUrl = this.ProfilePicDataUrl, SearchingCounter = 0};
+        UserPhotoModel userPhoto = new UserPhotoModel { PhotoType = PictureName, PhotoUrl = this.ProfilePicDataUrl, SearchingCounter = 0 };
 
         var res = await Http.PostAsJsonAsync<UserPhotoModel>("https://localhost:5001/api/UserPhoto/add_photo", userPhoto);
 
