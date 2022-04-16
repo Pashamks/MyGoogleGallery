@@ -27,10 +27,17 @@ namespace MyGoogleGallery.Server.Controllers
         }
         [HttpGet]
         [Route("get_photos")]
-        public async Task<string> GetPhotos()
+        public async Task<List<UserPhoto>> GetPhotos()
         {
-            return "Get";
-            //_efCoreRepository.AddNewPicture((UserPhoto)userPhotoModel);
+            return _efCoreRepository.GetAllPictures();
+        }
+        [HttpGet]
+        [Route("get_chart_data")]
+        public async Task<Dictionary<string, int>> GetChartData()
+        {
+            var res = _efCoreRepository.GetAllPictures();
+            var val = res.Select(x => x.PhotoType).Distinct().ToDictionary(k => k.ToLower(), v => res.Where(x => x.PhotoType == v).Count());
+            return val;
         }
         [HttpGet]
         [Route("find_photos")]

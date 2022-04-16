@@ -9,6 +9,8 @@
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
     <link href="css/app.css" rel="stylesheet" />
     <link href="MyGoogleGallery.Client.styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="_content/Radzen.Blazor/css/default-base.css">
+
 </head>
 
 <body>
@@ -20,9 +22,19 @@
         <a class="dismiss">🗙</a>
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
+    <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         function ButtonClick() {
             document.getElementById("myinput").click();
+        }
+        window.setup = (id, config) => {
+            var ctx = document.getElementById(id).getContext('2d');
+            
+            var chart = new Chart(ctx, config);
+            chart.destroy();
+            chart = new Chart(ctx, config);
         }
     </script>
 </body>

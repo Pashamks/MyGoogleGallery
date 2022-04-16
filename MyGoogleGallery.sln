@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGoogleGallery.Client", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGoogleGallery.Shared", "Shared\MyGoogleGallery.Shared.csproj", "{D06BE459-5185-43A0-9E0E-AB70E3467733}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyGooglegallery.EfCore.Repository", "EfCore.Repository\MyGooglegallery.EfCore.Repository.csproj", "{3EFF21C9-A228-49F9-A5E0-90BD87A38917}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyGooglegallery.EfCore.Repository", "EfCore.Repository\MyGooglegallery.EfCore.Repository.csproj", "{3EFF21C9-A228-49F9-A5E0-90BD87A38917}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

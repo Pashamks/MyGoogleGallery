@@ -4,7 +4,7 @@
 @inject IJSRuntime JS
 <style>
     body {
-        background-image: url('https://images.pexels.com/photos/1040499/pexels-photo-1040499.jpeg');
+        background-image: url('https://images.pexels.com/photos/3473569/pexels-photo-3473569.jpeg');
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
@@ -164,7 +164,6 @@
     {
         var res = await Http.GetAsync($"https://localhost:5001/api/UserPhoto/find_photos?searchTerm={PictureName}");
         ProfilePicDataUrl = res.Content.ReadAsStringAsync().Result;
-        Console.WriteLine(ProfilePicDataUrl);
     }
     protected async Task SavePhoto()
     {
@@ -172,7 +171,6 @@
 
         var res = await Http.PostAsJsonAsync<UserPhotoModel>("https://localhost:5001/api/UserPhoto/add_photo", userPhoto);
 
-        Console.WriteLine(res.Content.ReadAsStringAsync().Result);
+        await JS.InvokeVoidAsync("alert", "Your picture successfully saved!");
     }
-
 }
