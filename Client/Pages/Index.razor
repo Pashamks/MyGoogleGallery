@@ -13,7 +13,12 @@
         text-align: center;
         margin-bottom: 2%;
     }
-    
+    .image{
+        max-height: 250px;
+        max-width: 250px;
+        min-height: 150px;
+        min-width: 150px;
+    }
 
 </style>
 <h1 class="main-text">Welcome to MyGoogle Gallery!</h1>
@@ -21,27 +26,27 @@
 <div class="row col-12">
     <div class="col col-6">
         <h2 class="main-text">The most popular photos:</h2>
-        <div class="row">
-            <div>
-                <img src="@PopularImages[0]"/>
+        <div class="row  d-flex justify-content-center mb-3">
+            <div class="mr-4">
+                <img src="@PopularImages[0]" class="image"/>
             </div>
             <div>
-                <img src="@PopularImages[1]"/>
+                <img src="@PopularImages[1]" class="image"/>
             </div>
         </div>
-        <div class="row">
-            <div>
-                <img src="@PopularImages[2]"/>
+        <div class="row  d-flex justify-content-center">
+            <div class="mr-4">
+                <img src="@PopularImages[2]" class="image"/>
             </div>
             <div>
-                <img src="@PopularImages[3]"/>
+                <img src="@PopularImages[3]" class="image"/>
             </div>
         </div>
     </div>
     <div class="col-6">
         <h2 class="main-text">Photos statistic:</h2>
         <div class="container">
-            <div class="row">
+            <div class="row d-flex justify-content-center">
                 <div >
                     <RadzenChart Style="color: white;">
                         <RadzenPieSeries Data="@revenue" Title="Revenue" CategoryProperty="PhotoName" ValueProperty="SearchingAmount" />
@@ -76,7 +81,7 @@
 
         mylist.Sort((x,y) => y.searchingCounter-x.searchingCounter);
 
-        PopularImages = mylist.Select(x=>x.photoUrl).ToList();
+        PopularImages = mylist.Select(x=>x.photoUrl).Take(4).ToList();
     }
 
     class DataItem

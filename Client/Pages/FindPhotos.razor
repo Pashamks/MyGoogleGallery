@@ -1,27 +1,52 @@
 ﻿@page "/find_photos"
+@inject HttpClient Http
+@using System.Text.Json
+@using System.Globalization
 <style>
     body {
         background-image: url('https://images.pexels.com/photos/3435249/pexels-photo-3435249.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260');
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
-
+    .image{
+        min-width: 150px;
+        min-height: 150px;
+        max-width: 250px;
+        max-height: 250px;
+        margin-left: 2%;
+        margin-top: 2%;
+    }
 </style>
 <div class="col">
-    <div class="row d-flex justify-content-center" >
-        <input @bind="pictureType"/>
-        <button class="btn btn-light ml-3">Find</button>
+    <div class="row d-flex justify-content-center">
+        <input class="form-control" style="max-width: 300px;" @bind="pictureType" placeholder="Enter picture type" />
+        <button @onclick="FindPictures" class="btn btn-light ml-3">Find</button>
     </div>
     <div>
-      <hr />
+        @foreach (var item in _images)
+        {
+            <img class="image" src="@item"/>
+        }
+        <hr />
     </div>
 </div>
 @code {
     string pictureType { get; set; }
-    List<string> _picturesUrl { get; set; }
+    List<string> _images = new List<string> { "", "", "", "" };
 
     protected async Task FindPictures()
     {
+        var res = await Http.GetAsync($"https://localhost:5001/api/UserPhoto/get_photos");
+        var mylist = JsonSerializer.Deserialize<List<MyUserPhoto>>(res.Content.ReadAsStringAsync().Result);
 
+        mylist.Sort((x, y) => y.searchingCounter - x.searchingCounter);
+
+        _images = mylist.Where(x => x.photoType == pictureType).Select(x => x.photoUrl).ToList();
+    }
+    class MyUserPhoto
+    {
+        public string photoUrl { get; set; }
+        public string photoType { get; set; }
+        public int searchingCounter { get; set; }
     }
 }
