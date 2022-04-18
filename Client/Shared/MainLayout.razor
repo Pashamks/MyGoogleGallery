@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
-
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider Provider
 <AuthorizeView>
     <Authorized>
         <div class="page">
@@ -17,10 +18,10 @@
 
             <div class="main">
                 <div class="top-row px-4" style="background: #1D1F2A; ">
-                    <p style="color: white;">Welcome @context.User.Identity.Name</p>
-                    <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-                </div>
+                    <p class="text-primary mt-3">Welcome @context.User.Identity.Name</p>
+                    <button class="btn btn-link" @onclick="Logout">Logout</button>                 
 
+                </div>
                 <div class="content px-4">
                     @Body
                 </div>
@@ -31,3 +32,11 @@
         <Login></Login>
     </NotAuthorized>
 </AuthorizeView>
+
+@code{
+    protected void Logout()
+    {
+        ((TokenAuthenticationStateProvider)Provider).Logout();
+        NavigationManager.NavigateTo("/", true);
+    }
+}

@@ -58,5 +58,13 @@ namespace MyGoogleGallery.Client
             return new AuthenticationState(principal);
 
         }
+        public void Logout()
+        {
+            _localStorageService.RemoveAsync(nameof(UserViewModel));
+            var anonymousIdentity = new ClaimsIdentity();
+            var anonymousPrincipal = new ClaimsPrincipal(anonymousIdentity);
+            var authState =  Task.FromResult(new AuthenticationState(anonymousPrincipal));
+            NotifyAuthenticationStateChanged(authState);
+        }
     }
 }

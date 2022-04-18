@@ -1,0 +1,27 @@
+﻿@page "/find_photos"
+<style>
+    body {
+        background-image: url('https://images.pexels.com/photos/3435249/pexels-photo-3435249.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260');
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+    }
+
+</style>
+<div class="col">
+    <div class="row d-flex justify-content-center" >
+        <input @bind="pictureType"/>
+        <button class="btn btn-light ml-3">Find</button>
+    </div>
+    <div>
+      <hr />
+    </div>
+</div>
+@code {
+    string pictureType { get; set; }
+    List<string> _picturesUrl { get; set; }
+
+    protected async Task FindPictures()
+    {
+
+    }
+}
