@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
+using MyGoogleGallery.Client.Infrastructure;
+using MyGoogleGallery.Client.Shared;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -21,6 +24,7 @@ namespace MyGoogleGallery.Client
             builder.Services.AddOptions();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, TokenAuthenticationStateProvider>();
+            builder.Services.AddScoped<ILocalStorageService, LocalStorageService>();
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             
            
@@ -29,27 +33,29 @@ namespace MyGoogleGallery.Client
     }
     public class TokenAuthenticationStateProvider : AuthenticationStateProvider
     {
-        //private string _email { get; set; }
-        //public TokenAuthenticationStateProvider(string email)
-        //{
-        //    _email = email;
-        //}
+        private readonly ILocalStorageService _localStorageService;
+        public TokenAuthenticationStateProvider(ILocalStorageService localStorageService)
+        {
+            _localStorageService = localStorageService;
+        }
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
-            //if (string.IsNullOrEmpty(_email))
-            //{
-            //    var anonymousIdentity = new ClaimsIdentity();
-            //    var anonymousPrincipal = new ClaimsPrincipal(anonymousIdentity);
-            //    return new AuthenticationState(anonymousPrincipal);
-            //}
-            var anonymousIdentity = new ClaimsIdentity();
-            var anonymousPrincipal = new ClaimsPrincipal(anonymousIdentity);
-            return new AuthenticationState(anonymousPrincipal);
-            //var claims = new List<Claim> { new Claim(ClaimTypes.Email, "admin@gmail.com") };
-            //var identity = new ClaimsIdentity(claims, "Email");
-            //var principal = new ClaimsPrincipal(identity);
-            //return new AuthenticationState(principal);
-
+            var token = await _localStorageService.GetAsync<UserViewModel>(nameof(UserViewModel));
+            if (token == null || string.IsNullOrEmpty(token.Email) || string.IsNullOrEmpty(token.Password))
+            {
+                var anonymousIdentity = new ClaimsIdentity();
+                var anonymousPrincipal = new ClaimsPrincipal(anonymousIdentity);
+                return new AuthenticationState(anonymousPrincipal);
+            }
+            var claims = new List<Claim>
+            {
+                 new Claim(ClaimTypes.Name, token.Email),
+                new Claim(ClaimTypes.Email, token.Email),
+                new Claim("admin@gmail.com","12345678")
+            };
+            var identity = new ClaimsIdentity(claims, token.Email);
+            var principal = new ClaimsPrincipal(identity);
+            return new AuthenticationState(principal);
 
         }
     }

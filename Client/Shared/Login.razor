@@ -1,13 +1,14 @@
 ﻿
 @inherits LoginModel
     <style>
-       
+              
         body {
-            min-height: 100%;
             background-image: url('https://images.pexels.com/photos/1083822/pexels-photo-1083822.jpeg?auto=compress&cs=tinysrgb&h=650&w=940');
-            background-size: cover;
             background-repeat: no-repeat;
-            background-position: center center;
+            background-size: 100% 100%;
+        }
+        html {
+            height: 100%
         }
         .main {
             margin-top: 12%;
@@ -22,38 +23,42 @@
             margin-right: 5px;
         }
         .borders {
-            border-color: red;
-            max-width: 450px;
+         
         }
     </style>
 <div class="main">
-    <EditForm class="borders" Model="@LoginData" OnValidSubmit="LoginAsync">
-        <DataAnnotationsValidator/>
-        <ValidationSummary/>
-        <div class="row">
-            <h1 style="color: white;">Wellcome to GoogleGallery!</h1>
-        </div>
-        <div class="form-group row">
-            <label for="lastName" class="col-sm-2 col-form-label my-text">
-                Email:
-            </label>
-            <div class="col-sm-10">
-                <InputText id="lastName" class="form-control" placeholder="Email"
-                           @bind-Value="LoginData.Email" />
+    <div>
+        <EditForm class="borders" Model="@LoginData" OnValidSubmit="LoginAsync">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="row">
+                <h1 style="color: white;">Wellcome to GoogleGallery!</h1>
             </div>
-        </div>
-        <div class="form-group row">
-            <label for="email" class="col-sm-2 col-form-label my-text">
-                Password:
-            </label>
-            <div class="col-sm-10">
-                <InputText id="email" class="form-control" placeholder="Password" type="password"
-                           @bind-Value="LoginData.Password" />
+            <div class="form-group row">
+                <label for="lastName" class="col-sm-2 col-form-label my-text">
+                    Email:
+                </label>
+                <div class="col-sm-10">
+                    <InputText id="lastName" class="form-control" placeholder="Email"
+                               @bind-Value="LoginData.Email" />
+                </div>
             </div>
-        </div>
+            <div class="form-group row">
+                <label for="email" class="col-sm-2 col-form-label my-text">
+                    Password:
+                </label>
+                <div class="col-sm-10">
+                    <InputText id="email" class="form-control" placeholder="Password" type="password"
+                               @bind-Value="LoginData.Password" />
+                </div>
+            </div>
+            <div class="d-flex justify-content-center pr-3">
+                <button class="btn btn-primary" type="submit">Login</button>
 
-        <p><button type="submit">Login</button></p>
-    </EditForm>
+            </div>
+        </EditForm>
+    </div>
+    
 </div>
 
 

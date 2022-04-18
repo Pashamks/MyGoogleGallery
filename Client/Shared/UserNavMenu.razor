@@ -1,6 +1,5 @@
-﻿@inject AuthenticationStateProvider Provider
+﻿
 
-@inherits LoginModel
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">MyGoogleGallery</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
@@ -12,16 +11,14 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
+                <span class="oi oi-home" aria-hidden="true"></span> Home gallery
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="upload_photo">
-                <span class="oi oi-plus" aria-hidden="true"></span> Upload photo
+                <span class="oi oi-plus" aria-hidden="true"></span> Find photo
             </NavLink>
         </li>
-
-
     </ul>
 </div>
 
@@ -34,20 +31,9 @@
 
     private void ToggleNavMenu()
     {
-
         collapseNavMenu = !collapseNavMenu;
     }
-
-    protected override async void OnInitialized()
+    protected override void OnInitialized()
     {
-        await fillEmail();
-        //Console.WriteLine(LoginData.Email);
-    }
-    protected async Task<bool> fillEmail()
-    {
-        var state = await Provider.GetAuthenticationStateAsync();
-        Email = state?.User?.Identity?.Name ?? "Error";
-        Console.WriteLine(Email);
-        return Email == "admin@gmail.com" ? true : false;
     }
 }

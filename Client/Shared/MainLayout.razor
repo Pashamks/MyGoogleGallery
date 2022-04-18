@@ -4,11 +4,20 @@
     <Authorized>
         <div class="page">
             <div class="sidebar" style="background: #1D1F2A; ">
-                <NavMenu />
+                @if (@context.User.Identity.Name == "admin@gmail.com")
+                {
+                    <NavMenu />
+                }
+                else
+                {
+                    <UserNavMenu/>
+                }
+
             </div>
 
             <div class="main">
                 <div class="top-row px-4" style="background: #1D1F2A; ">
+                    <p style="color: white;">Welcome @context.User.Identity.Name</p>
                     <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
                 </div>
 

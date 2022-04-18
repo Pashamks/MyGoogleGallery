@@ -72,15 +72,10 @@
     protected async Task GetPopilarImages()
     {
         var res = await Http.GetAsync($"https://localhost:5001/api/UserPhoto/get_photos");
-        Console.WriteLine(res.Content.ReadAsStringAsync().Result);
         var mylist = JsonSerializer.Deserialize<List<MyUserPhoto>>(res.Content.ReadAsStringAsync().Result);
 
         mylist.Sort((x,y) => y.searchingCounter-x.searchingCounter);
 
-        foreach (var item in mylist)
-        {
-            Console.WriteLine(item.photoType);
-        }
         PopularImages = mylist.Select(x=>x.photoUrl).ToList();
     }
 
