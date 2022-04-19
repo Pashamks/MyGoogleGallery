@@ -8,6 +8,7 @@ namespace MyGooglegallery.EfCore.Repository
     public class EfDbContext : DbContext
     {
         protected string _connectionString = "Data Source=DESKTOP-SM098C1;Initial Catalog=MyGoogleGalleryDb;Integrated Security=True";
+        public DbSet<Users> Users { get; set; }
         public DbSet<UserPhoto> UserPhotos { get; set; }
         public EfDbContext()
         {

@@ -25,6 +25,14 @@ namespace MyGoogleGallery.Server.Controllers
             _efCoreRepository.AddNewPicture((UserPhoto)userPhotoModel);
             return (UserPhoto)userPhotoModel;
         }
+        [HttpPost]
+        [Route("login")]
+        public async Task<bool> Login([FromQuery] string email, [FromQuery] string password)
+        {
+            var user = new Users { Email = email, Password = password };
+            bool val = await _efCoreRepository.Login(user);
+            return val ;
+        }
         [HttpGet]
         [Route("get_photos")]
         public async Task<List<UserPhoto>> GetPhotos()

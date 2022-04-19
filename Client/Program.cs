@@ -2,16 +2,14 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using MyGoogleGallery.Client.Infrastructure;
 using MyGoogleGallery.Client.Shared;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
+
 
 namespace MyGoogleGallery.Client
 {
@@ -34,6 +32,7 @@ namespace MyGoogleGallery.Client
     public class TokenAuthenticationStateProvider : AuthenticationStateProvider
     {
         private readonly ILocalStorageService _localStorageService;
+        private static readonly HttpClient client = new HttpClient();
         public TokenAuthenticationStateProvider(ILocalStorageService localStorageService)
         {
             _localStorageService = localStorageService;
@@ -41,6 +40,7 @@ namespace MyGoogleGallery.Client
         public override async Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             var token = await _localStorageService.GetAsync<UserViewModel>(nameof(UserViewModel));
+            Console.WriteLine(token?.Email);
             if (token == null || string.IsNullOrEmpty(token.Email) || string.IsNullOrEmpty(token.Password))
             {
                 var anonymousIdentity = new ClaimsIdentity();

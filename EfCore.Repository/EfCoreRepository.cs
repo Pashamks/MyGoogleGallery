@@ -25,6 +25,23 @@ namespace MyGooglegallery.EfCore.Repository
                 await ctxt.SaveChangesAsync();
             }
         }
+        
+        public async Task<bool> Login(Users user)
+        {
+            using (var ctxt = GetContext())
+            {
+                if (ctxt.Users.Where(x => x.Email == user.Email && x.Password == user.Password).Count() > 0)
+                    return true;
+                var user_in_db = ctxt.Users.Where(x => x.Email == user.Email).FirstOrDefault();
+                if(user_in_db == null && !string.IsNullOrEmpty(user_in_db.Email) && !string.IsNullOrEmpty(user_in_db.Password))
+                {
+                    ctxt.Users.Add(user);
+                    await ctxt.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+        }
         public List<UserPhoto> GetAllPictures()
         {
             using (var ctxt = GetContext())
