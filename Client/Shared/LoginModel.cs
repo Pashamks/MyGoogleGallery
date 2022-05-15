@@ -26,10 +26,10 @@ namespace MyGoogleGallery.Client.Shared
                   { "email", LoginData.Email },
                   { "password", LoginData.Password }
               };
-
+            
             var content = new FormUrlEncodedContent(values);
             var response = await client.PostAsync($"https://localhost:5001/api/UserPhoto/login?email={LoginData.Email}&password={LoginData.Password}", content);
-  
+            Console.WriteLine(response);
             var responseString = await response.Content.ReadAsStringAsync();
             if(!Convert.ToBoolean(responseString))
             {

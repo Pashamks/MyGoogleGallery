@@ -4,7 +4,6 @@
 @inject IJSRuntime JS
 <style>
     body {
-        background-image: url('https://images.pexels.com/photos/3473569/pexels-photo-3473569.jpeg');
         background-repeat: no-repeat;
         background-size: 100% 100%;
     }
@@ -20,11 +19,11 @@
     }
 
     .text {
-        color: white;
+        color: black;
     }
 
     .div-border {
-        background: #6C1A46;
+        background: #c380c4;
         border-radius: 25px;
         max-width: 250px;
         margin-left: 2%;
@@ -37,7 +36,7 @@
     .div-text {
         align-self: center;
         max-width: 200px;
-        color: white;
+        color: black;
     }
 
     .first-row {
@@ -53,7 +52,7 @@
     }
 
     .second-div-border {
-        background: #6C1A46;
+        background: #c380c4;
         border-radius: 25px;
         margin-left: 2%;
         min-width: 410px;
@@ -84,14 +83,13 @@
     }
 
     .my-buttons {
-        
         min-width: 200px;
         min-height: 60px;
         border-radius: 25px;
         font-size: 28px;
-        background: #6C1A46;
-        color: white;
-        border-color: #6C1A46;
+        background: #c380c4;
+        color: black;
+        border-color: #c380c4;
     }
 </style>
 
@@ -137,7 +135,7 @@
     </div>
     <div class="d-flex justify-content-around mt-3">
         <button class="btn btn-success" @onclick="SavePhoto">Save photo</button>
-        <button class="btn btn-danger" @onclick="ClearPhoto">Clear current photo</button>
+        <button class="btn btn-danger " @onclick="ClearPhoto">Clear current photo</button>
     </div>
 </div>
 

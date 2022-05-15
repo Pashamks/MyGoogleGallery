@@ -4,7 +4,7 @@
 <AuthorizeView>
     <Authorized>
         <div class="page">
-            <div class="sidebar" style="background: #1D1F2A; ">
+            <div class="sidebar" style="background: #70A4B4; ">
                 @if (@context.User.Identity.Name == "admin@gmail.com")
                 {
                     <NavMenu />
@@ -17,9 +17,9 @@
             </div>
 
             <div class="main">
-                <div class="top-row px-4" style="background: #1D1F2A; ">
-                    <p class="text-primary mt-3">Welcome @context.User.Identity.Name</p>
-                    <button class="btn btn-link" @onclick="Logout">Logout</button>                 
+                <div class="top-row px-4" style="background: #70A4B4; ">
+                    <p class="text-dark mt-3">Welcome @context.User.Identity.Name</p>
+                    <button class="btn text-dark" @onclick="Logout">Logout</button>                 
 
                 </div>
                 <div class="content px-4">
